@@ -1,0 +1,23 @@
+
+*, *:before, *:after{
+	@include box-sizing("border-box");
+}
+
+html,body{
+	background-color: $color-gray-light;
+}
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: $font-weight-normal;
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	color: $color-black;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}

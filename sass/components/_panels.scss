@@ -1,0 +1,77 @@
+
+
+	main[role=main] {
+
+		/**
+		 * Login panel
+		 */
+		.login-panel {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+		}
+
+
+		/**
+		 *
+		 */
+		.game-panel {
+			width: 10px;
+			height: 10px;
+			position: absolute;
+			top: -10px;
+			left: -10px;
+			opacity: 0;
+			@include border-radius(50%);
+			background-color: $color-yellow;
+			@include transition(all .3s);
+			header{
+				opacity: 0;
+				background-color: $color-green;
+				transform: translate3d(0,-100%,0);
+				padding: $gutter;
+				@include transition(transform .4s );
+			}
+			table {
+				margin: $gutter*2 auto;
+				opacity: 0;
+				@include transition(transform .2s cubic-bezier(.51,.14,.68,1.97) );
+				transform: scale3d(.5,.5,.5);
+
+				td{
+					padding: $gutter;
+				}
+			}
+		}
+	}
+
+
+
+
+
+
+
+	body.play{
+
+		.game-panel{
+			width: 100%;
+			height: 100%;
+			opacity: 1;
+			@include border-radius(0%);
+		}
+	}
+
+	body.display{
+		.game-panel{
+			header{
+				opacity: 1;
+				transform: translate3d(0,0%,0);
+			}
+			table {
+				opacity: 1;
+				transform: scale3d(1,1,1)
+			}
+		}
+	}

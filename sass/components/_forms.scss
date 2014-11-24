@@ -1,0 +1,64 @@
+
+// - - - [ LOGIN FORM ] - - - - - - - - - - - - - - - - - - - - -
+form.login-form {
+	position: relative;
+	padding: $gutter;
+	background-color: $color-white;
+	margin: $gutter*2 auto;
+	width: 40%;
+	@include box-shadow(0 1px 2px rgba($color-black,.37));
+
+	.login-form__name-wrapper,
+	.login-form__email-wrapper {}
+
+	.login-form__submit-wrapper {
+		text-align: right;
+	}
+
+	.login-form__header{
+		padding: $gutter;
+		margin-left: - $gutter;
+		margin-right: - $gutter;
+		margin-top: - $gutter;
+	}
+
+
+	input[type=text],
+	input[type=email] {
+		border:none;
+		border-bottom: 1px solid shade($color-gray-light,10%);
+		padding: $gutter/2;
+		display: block;
+		margin-bottom: $gutter;
+		width: 100%;
+	}
+	input[type=submit] {
+		font-family: 'icomoon';
+		color: $color-white;
+		font-size: 20px;
+		background-color: $color-yellow;
+		border: none;
+		height: 50px;
+		width: 50px;
+		right: $gutter;
+		bottom: $gutter;
+		outline: none;
+		@include border-radius(50%);
+		@include box-shadow(0 1px 2px rgba($color-black,.37));
+	}
+}
+
+@-webkit-keyframes rotating {
+	from{
+		-webkit-transform: rotate(0deg);
+	}
+	to{
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+form.login-form.loading {
+	input[type=submit] {
+		-webkit-animation: rotating 2s linear infinite;
+	}
+}

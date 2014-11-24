@@ -1,0 +1,45 @@
+
+
+.card-list {
+	@include pie-clearfix;
+	max-width: 960px;
+	margin: auto;
+	li{
+		float: left;
+		width: ( 100% / 6 );
+		padding: $gutter/2;
+	}
+}
+
+
+.container {
+	width: 100%;
+	height: 60px;
+	position: relative;
+	perspective: 800px;
+}
+.card {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	transform-style: preserve-3d;
+	transition: transform 1s;
+}
+.card figure {
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	backface-visibility: hidden;
+}
+.card .front {
+	background-color: $color-white;
+	background-image: url(images/card-pattern.svg);
+}
+.card .back {
+	background: $color-white;
+	transform: rotateY( 180deg );
+}
+.card.flipped{
+	transform: rotateY( 180deg );
+}
