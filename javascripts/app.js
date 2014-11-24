@@ -1,13 +1,20 @@
+/**
+ * Created by einar on 21/11/14.
+ */
 
+/**
+ * Listen for when the document is ready.
+ *
+ */
 document.addEventListener('DOMContentLoaded',function(){
 
+	'use strict';
 
-
-	var session = undefined;
-
+	/**
+	 * When the user tries to 'log in'
+	 */
 	document.querySelector('.js-login-form').addEventListener('submit',function(event){
 		event.preventDefault();
-
 		event.target.classList.add('loading');
 
 		var submitPos = event.target[2].getBoundingClientRect();
@@ -24,9 +31,9 @@ document.addEventListener('DOMContentLoaded',function(){
 			}
 		},false);
 
-		session = new Session();
+		var session = new Session();
 		//session.host = 'http://totalrecall.99cluster.com';
-		//session.name = this.name.value;
+		session.name = this.name.value;
 		session.email = this.email.value;
 		session.start(function(object){
 
@@ -73,6 +80,7 @@ document.addEventListener('DOMContentLoaded',function(){
 			object.addEventListener('flip',function(element, value){
 				element.querySelector('.card').classList.add('flipped');
 				element.querySelector('.back').innerText = value;
+				element.querySelector('.back').classList.add( value );
 			},false);
 
 			object.addEventListener('unflip',function(e){

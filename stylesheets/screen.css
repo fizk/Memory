@@ -237,7 +237,7 @@ main[role=main] .game-panel header {
   transition: transform 0.4s;
 }
 /* line 37, ../sass/components/_panels.scss */
-main[role=main] .game-panel table {
+main[role=main] .game-panel .card-list {
   margin: 60px auto;
   opacity: 0;
   -moz-transition: -moz-transform 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
@@ -247,7 +247,7 @@ main[role=main] .game-panel table {
   transform: scale3d(0.5, 0.5, 0.5);
 }
 /* line 43, ../sass/components/_panels.scss */
-main[role=main] .game-panel table td {
+main[role=main] .game-panel .card-list td {
   padding: 30px;
 }
 
@@ -267,7 +267,7 @@ body.display .game-panel header {
   transform: translate3d(0, 0%, 0);
 }
 /* line 72, ../sass/components/_panels.scss */
-body.display .game-panel table {
+body.display .game-panel .card-list {
   opacity: 1;
   transform: scale3d(1, 1, 1);
 }
@@ -392,9 +392,117 @@ form.login-form.loading input[type=submit] {
 .card .back {
   background: white;
   transform: rotateY(180deg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 90% 90%;
 }
 
-/* line 43, ../sass/components/_cards.scss */
+/* line 72, ../sass/components/_cards.scss */
+.card .back.a {
+  background-image: url(images/01.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.b {
+  background-image: url(images/02.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.c {
+  background-image: url(images/03.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.d {
+  background-image: url(images/04.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.e {
+  background-image: url(images/05.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.f {
+  background-image: url(images/06.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.g {
+  background-image: url(images/07.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.h {
+  background-image: url(images/08.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.i {
+  background-image: url(images/09.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.j {
+  background-image: url(images/10.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.k {
+  background-image: url(images/11.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.l {
+  background-image: url(images/12.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.m {
+  background-image: url(images/13.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.n {
+  background-image: url(images/14.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.o {
+  background-image: url(images/15.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.p {
+  background-image: url(images/16.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.q {
+  background-image: url(images/17.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.r {
+  background-image: url(images/18.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.s {
+  background-image: url(images/19.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.t {
+  background-image: url(images/20.svg);
+}
+
+/* line 72, ../sass/components/_cards.scss */
+.card .back.v {
+  background-image: url(images/21.svg);
+}
+
+/* line 77, ../sass/components/_cards.scss */
 .card.flipped {
   transform: rotateY(180deg);
 }

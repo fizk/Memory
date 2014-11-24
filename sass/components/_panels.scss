@@ -34,7 +34,7 @@
 				padding: $gutter;
 				@include transition(transform .4s );
 			}
-			table {
+			.card-list {
 				margin: $gutter*2 auto;
 				opacity: 0;
 				@include transition(transform .2s cubic-bezier(.51,.14,.68,1.97) );
@@ -69,7 +69,7 @@
 				opacity: 1;
 				transform: translate3d(0,0%,0);
 			}
-			table {
+			.card-list {
 				opacity: 1;
 				transform: scale3d(1,1,1)
 			}

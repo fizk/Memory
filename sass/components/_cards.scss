@@ -39,7 +39,41 @@
 .card .back {
 	background: $color-white;
 	transform: rotateY( 180deg );
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 90% 90%;
 }
+
+
+$list :	'a' '01.svg',
+		'b' '02.svg',
+		'c' '03.svg',
+		'd' '04.svg',
+		'e' '05.svg',
+		'f' '06.svg',
+		'g' '07.svg',
+		'h' '08.svg',
+		'i' '09.svg',
+		'j' '10.svg',
+		'k' '11.svg',
+		'l' '12.svg',
+		'm' '13.svg',
+		'n' '14.svg',
+		'o' '15.svg',
+		'p' '16.svg',
+		'q' '17.svg',
+		'r' '18.svg',
+		's' '19.svg',
+		't' '20.svg',
+		'v' '21.svg';
+
+
+@each $item in $list {
+	.card .back.#{nth($item,1)}{
+		background-image: url(images/#{nth($item,2)});
+	}
+}
+
 .card.flipped{
 	transform: rotateY( 180deg );
 }
