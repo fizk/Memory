@@ -50,4 +50,91 @@ You could also use the the famous Python HTTP server
     $ python -m http.server
     
 But do make sure you are using an HTTP server. All URIs start with `/` so they are expecting to be running in a 
-web-server. Also `XmlHttpRequest` needs to be running on a server to be able to do requests. 
+web-server. Also `XmlHttpRequest` needs to be running on a server to be able to do requests.
+ 
+ 
+##What have you done?
+Here is a little rant about how the code got developed.
+
+###The Objects.
+Keeping true to the OOP way of thinking, I knew that I needed a `Game` object. Something that would store the state
+of the game as well as sending requests to the Total Recall server. As I started to get deeper into the code I realised
+that I was mixing `XmlHttpRequest` with the logic of the game. I extracted the `Ajax` out of the class and creating a new
+one called `Session`. This class would be responsible for all communications with the Game server, while the `Game`
+class would be responsible for logic and state.
+
+The `Game` class would have to hold a an instance of `Session` and there wouldn't be any need for a `Game` class before
+a connection was made to the server. I therefor decided to use a pattern one sees often in _asynchronous_
+frameworks when connecting to a remove service.
+
+    new ConnectionObject.connect(function(connection){
+        connection.send();
+    });
+    
+A connection object is created and once in connects it will, in the callback function provide an object that
+acts as a pipe to the service. In the case of the Memory Game it looks like this
+
+
+    var session = new Session();
+        session.host = [host];
+        session.name = [name];
+        session.email = [email];
+        session.start(function( game ){
+        
+            game.create();
+        });
+        
+        
+The `game` object provided in the `session.start()` callback function is an instance of the `Game` object
+which has been initialised and populated with data that came from the initial connection with the Total Recall server,
+like `Session ID` and the size of the board.
+
+###The Markup
+When I wrote the first prototype of the game I created the markup needed in the `game.create();` function. That was 
+totally fine while I was developing the game logic but once I had all the logic down I wanted to move way from
+the fact the `Game` class would control how the markup looked like. The `Game` class would still have to hold a
+reference to the _cards_, 'cause they needed to be hooked up with event function that control how the game is played.
+But how HTMLElements are augmented to represent change in state had to be extracted from the `Game` class.
+
+The solution was really simple. I just mimicked the `.addEventListener(type,callback,bubble)` interface for the `Game`
+class and made these events available: _move_, _flip_, _unflip_, _match_ and _win_. Before I called the 
+`game.create();` function I provided the class with a NodeList of all the cards and if something happened in the
+game logic one of the events would fire, providing me with a Node from this NodeList 
+
+        
+    var session = new Session();
+        session.host = [host];
+        session.name = [name];
+        session.email = [email];
+        session.start(function( game ){
+        
+            game.cards = document.querySelectorAll('.cards');
+            
+            game.addEventListener('move',function(number){
+                // display how many moves have been made
+            },false);
+            game.addEventListener('flip',function(element){
+                // turn element around
+            },false);
+            game.addEventListener('unflip',function(element){
+                // turn element back around
+            },false);
+            game.addEventListener('match',function(element1,element2){
+                // display that element1 and element2 
+                // are a pair
+            },false);
+            game.addEventListener('win',function(result){
+                //display the result object from the REST server, or not    
+            },false);
+            
+            game.create();
+        });
+        
+And now the presentation and the game logic have been separated. The only requirement for this to work is that 
+
+1. the object passed to `game.cards` is _interable_ collection
+2. that items in that collection implement the [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener) interface
+3. that items in that collection are listening for the `click` event
+
+If these requirements are met, then in theory you could use that ever method to display the game and various
+state of it.
