@@ -67,7 +67,7 @@ The `Game` class would have to hold a an instance of `Session` and there wouldn'
 a connection was made to the server. I therefor decided to use a pattern one sees often in _asynchronous_
 frameworks when connecting to a remove service.
 
-    new ConnectionObject.connect(function(connection){
+    new Server().connect(function(connection){
         connection.send();
     });
     
@@ -138,3 +138,8 @@ And now the presentation and the game logic have been separated. The only requir
 
 If these requirements are met, then in theory you could use that ever method to display the game and various
 state of it.
+
+
+##Icons
+Stash by Jonathan Patterson (Free for commercial use)
+Ballicons 2 Free by Pixel Buddha (Creative Commons (Attribution 3.0 Unported))
