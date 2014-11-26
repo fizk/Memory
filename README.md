@@ -4,6 +4,11 @@ This is an implementation of the classic game *Memory*. It uses a gaming sever c
 They have implemented the logic and expose it through an [API](http://totalrecall.99cluster.com/). What this code does 
 is to implement the client side logic so it's possible to play the game from the comfort of your own browser.
   
+##Env
+This code was written in Google Chrome 39.0.2171.71. The code was also tested on Firefox 33.1.1. There may be issues with
+Safari (7.0.4). Most of these issues are the result of `Failed to load resource is not allowed by Access-Control-Allow-Origin.`
+Internet Explorer was not tested and I don't think he will pass the test :(
+  
 ##Install
 Well obviously you are going to clone this repo onto your machine. That's the only installation that you need.
 
