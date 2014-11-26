@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title></title>
 	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 	<link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
 	<!--[if IE]>
 	<link href="/stylesheets/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
 	<![endif]-->
+	<script src="/javascripts/polyfill.js"></script>
 	<script src="/javascripts/Objects.js"></script>
+	<template id="tpl-card">
+		<section class="card-container">
+			<div class="card">
+				<div class="front"></div>
+				<div class="back">
+					<span></span>
+				</div>
+			</div>
+		</section>
+	</template>
+	<template id="tpl-dialog">
+		<div class="dialog">
+			<div class="dialog__dialog">
+				<h2>Yes&hellip; do you not know how to play this game?</h2>
+				<p>You can only flip two cards at a time.</p>
+				<p>You are looking for a match to the one you have already flipped over.</p>
+				<p>Try to do it in as few moves as you can!</p>
+				<footer class="dialog__footer">
+					<a href="#" class="js-dialog-close dialog__close">&#xe600;</a>
+				</footer>
+			</div>
+		</div>
+	</template>
 </head>
-<body class="unresolved">
+<body class="">
 
 	<main role="main">
 		<section class="login-panel">
@@ -19,10 +44,10 @@
 					Log in
 				</header>
 				<div class="login-form__name-wrapper">
-					<input name="name" type="text" placeholder="Name..." required  />
+					<input name="name" type="text" placeholder="Name..." required />
 				</div>
 				<div class="login-form__email-wrapper">
-					<input name="email" type="email" placeholder="E-mail..." required  />
+					<input name="email" type="email" placeholder="E-mail..." required />
 				</div>
 				<div class="login-form__submit-wrapper">
 					<input type="submit" value="&#xe600;" name="submit" />
@@ -30,10 +55,42 @@
 			</form>
 		</section>
 		<section class="game-panel js-game-panel">
-			<header>
-				<span id="monitor">0</span> moves
+			<header class="game-panel__head">
+				<h1 class="game-panel__header">Total Recall:</h1> in
+				<span class="js-monitor">0</span> moves
 			</header>
 			<ul class="card-list"></ul>
+		</section>
+		<section class="score-panel js-score-panel">
+			<header class="score-panel__header">
+				<h1>Good job</h1>
+			</header>
+			<div class="score-panel__score">
+				<figure class="score-panel__award" ></figure>
+				<p class="score-panel__total">Your score is <em>45%</em></p>
+			</div>
+			<div class="score-panel__credit">
+				<h2>Credit</h2>
+				<p>Now would be a fine time to acknowledge the fine people who made this
+					game possible.</p>
+				<p>The actual game server was created by the folks at 99design. The REST
+					documentation can be read here at
+					<a href="http://totalrecall.99cluster.com/">http://totalrecall.99cluster.com/</a>. </p>
+				<p>All JavaScript, markup and CSS was written and designed by
+					<a href="http://einar.falkworld.net/">Einar Valur Aðalsteinsson</a>. His portfolio
+					can be admired <a href="http://einar.falkworld.net/portfolio">here</a> and his
+					<a href="https://github.com/fizk">GitHub repo</a> is also available</p>
+				<p>The flat design icons are:</p>
+				<ul>
+					<li>Stash by Jonathan Patterson (Free for commercial use)</li>
+					<li>Ballicons 2 Free by Pixel Buddha (Creative Commons (Attribution 3.0 Unported))</li>
+					<li>Ramy Wafaa, Suzanne de Jong and Natalie Schaubert</li>
+				</ul>
+			</div>
+			<div class="score-panel__again">
+				<a href="/" class="score-panel__button">&#xe600;</a>
+			</div>
+
 		</section>
 	</main>
 

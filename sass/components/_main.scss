@@ -1,4 +1,6 @@
 
+@include establish-baseline;
+
 *, *:before, *:after{
 	@include box-sizing("border-box");
 }
@@ -20,4 +22,8 @@ body {
 
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+template{
+	display: none !important;
 }

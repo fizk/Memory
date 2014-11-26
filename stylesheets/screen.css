@@ -163,19 +163,100 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   content: "\e600";
 }
 
-/* line 2, ../sass/components/_main.scss */
+/* line 2, ../sass/helpers/_extensions.scss */
+main[role=main] .score-panel .score-panel__button, form.login-form input[type=submit], .dialog .dialog__dialog .dialog__close, form.login-form, .card-container .card .back, .dialog .dialog__dialog {
+  -moz-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
+  -webkit-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
+  box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
+}
+
+/* line 7, ../sass/helpers/_extensions.scss */
+main[role=main] .score-panel .score-panel__credit a, .dialog .dialog__dialog a {
+  text-decoration: none;
+  color: white;
+}
+/* line 11, ../sass/helpers/_extensions.scss */
+main[role=main] .score-panel .score-panel__credit h2, .dialog .dialog__dialog h2 {
+  font-size: 1.5em;
+  line-height: 1em;
+  padding-top: 1em;
+}
+/* line 15, ../sass/helpers/_extensions.scss */
+main[role=main] .score-panel .score-panel__credit p, .dialog .dialog__dialog p {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+/* line 21, ../sass/helpers/_extensions.scss */
+main[role=main] .score-panel .score-panel__button, form.login-form input[type=submit], .dialog .dialog__dialog .dialog__close {
+  height: 50px;
+  width: 50px;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  font-family: 'icomoon';
+  color: white;
+  font-size: 20px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+
+/**
+ * Rotate something
+ */
+@-webkit-keyframes rotating {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+/**
+ * Shake
+ */
+@-webkit-keyframes shake {
+  0%, 100% {
+    -webkit-transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translateX(-10px);
+  }
+  20%, 40%, 60%, 80% {
+    -webkit-transform: translateX(10px);
+  }
+}
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-10px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(10px);
+  }
+}
+/* line 106, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/typography/_vertical_rhythm.scss */
+html {
+  font-size: 100%;
+  line-height: 1.5em;
+}
+
+/* line 4, ../sass/components/_main.scss */
 *, *:before, *:after {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-/* line 6, ../sass/components/_main.scss */
+/* line 8, ../sass/components/_main.scss */
 html, body {
   background-color: #f0f0f0;
 }
 
-/* line 9, ../sass/components/_main.scss */
+/* line 11, ../sass/components/_main.scss */
 body {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
@@ -191,7 +272,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* line 3, ../sass/components/_panels.scss */
+/* line 27, ../sass/components/_main.scss */
+template {
+  display: none !important;
+}
+
+/**
+ * The three stages of the game are sored in three section.
+ *
+ * 1. Log in		(.login-panel)
+ * 2. Play game		(.game-panel)
+ * 3. Get score		(.score-panel)
+ */
+/**
+ * Default display of state panels
+ */
+/* line 13, ../sass/components/_panels.scss */
 main[role=main] {
   /**
    * Login panel
@@ -199,8 +295,11 @@ main[role=main] {
   /**
    *
    */
+  /**
+   *
+   */
 }
-/* line 8, ../sass/components/_panels.scss */
+/* line 18, ../sass/components/_panels.scss */
 main[role=main] .login-panel {
   position: fixed;
   top: 0;
@@ -208,7 +307,7 @@ main[role=main] .login-panel {
   bottom: 0;
   left: 0;
 }
-/* line 20, ../sass/components/_panels.scss */
+/* line 29, ../sass/components/_panels.scss */
 main[role=main] .game-panel {
   width: 10px;
   height: 10px;
@@ -216,42 +315,159 @@ main[role=main] .game-panel {
   top: -10px;
   left: -10px;
   opacity: 0;
+  background-color: #ddc885;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
-  background-color: #ddc885;
   -moz-transition: all 0.3s;
   -o-transition: all 0.3s;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
-/* line 30, ../sass/components/_panels.scss */
-main[role=main] .game-panel header {
+/* line 40, ../sass/components/_panels.scss */
+main[role=main] .game-panel .game-panel__head {
   opacity: 0;
   background-color: #559072;
+  padding: 15px 30px;
+  color: white;
+  -moz-transform: translate3d(0, -100%, 0);
+  -ms-transform: translate3d(0, -100%, 0);
+  -webkit-transform: translate3d(0, -100%, 0);
   transform: translate3d(0, -100%, 0);
-  padding: 30px;
   -moz-transition: -moz-transform 0.4s;
   -o-transition: -o-transform 0.4s;
   -webkit-transition: -webkit-transform 0.4s;
   transition: transform 0.4s;
 }
-/* line 37, ../sass/components/_panels.scss */
-main[role=main] .game-panel .card-list {
-  margin: 60px auto;
-  opacity: 0;
-  -moz-transition: -moz-transform 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
-  -o-transition: -o-transform 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
-  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
-  transition: transform 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
-  transform: scale3d(0.5, 0.5, 0.5);
+/* line 48, ../sass/components/_panels.scss */
+main[role=main] .game-panel .game-panel__head .game-panel__header {
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  *zoom: 1;
+  *display: inline;
+  font-weight: 800;
 }
-/* line 43, ../sass/components/_panels.scss */
-main[role=main] .game-panel .card-list td {
+/* line 59, ../sass/components/_panels.scss */
+main[role=main] .score-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #c8754b;
   padding: 30px;
+  -moz-transform: translate3d(0, 100%, 0);
+  -ms-transform: translate3d(0, 100%, 0);
+  -webkit-transform: translate3d(0, 100%, 0);
+  transform: translate3d(0, 100%, 0);
+  -moz-transition: all 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  -o-transition: all 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  -webkit-transition: all 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  transition: all 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+}
+@media (max-width: 480px) {
+  /* line 59, ../sass/components/_panels.scss */
+  main[role=main] .score-panel {
+    overflow: scroll;
+  }
+}
+/* line 76, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__header {
+  font-size: 1.5em;
+  line-height: 1em;
+  padding-bottom: 2em;
+}
+/* line 81, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__score {
+  *zoom: 1;
+  padding-bottom: 2em;
+}
+/* line 38, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+main[role=main] .score-panel .score-panel__score:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 85, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__score .score-panel__award {
+  width: 150px;
+  height: 150px;
+  display: block;
+  float: left;
+  background-image: url(images/01-up.svg);
+  background-position: center;
+  background-size: 100%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  -moz-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
+  -webkit-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
+  box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
+}
+/* line 96, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__score .score-panel__award.up-01 {
+  background-image: url(images/01-up.svg);
+}
+/* line 97, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__score .score-panel__award.up-02 {
+  background-image: url(images/02-up.svg);
+}
+/* line 98, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__score .score-panel__award.up-03 {
+  background-image: url(images/03-up.svg);
+}
+/* line 100, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__score .score-panel__total {
+  padding: 1.5em;
+  font-size: 1.5em;
+  line-height: 1em;
+  margin-left: 200px;
+}
+@media (max-width: 480px) {
+  /* line 108, ../sass/components/_panels.scss */
+  main[role=main] .score-panel .score-panel__score .score-panel__award {
+    width: 50px;
+    height: 50px;
+  }
+  /* line 112, ../sass/components/_panels.scss */
+  main[role=main] .score-panel .score-panel__score .score-panel__total {
+    padding-top: 0;
+    margin-left: 60px;
+  }
+}
+/* line 119, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__credit {
+  -moz-columns: 30px 2;
+  -webkit-columns: 30px 2;
+  columns: 30px 2;
+}
+@media (max-width: 480px) {
+  /* line 119, ../sass/components/_panels.scss */
+  main[role=main] .score-panel .score-panel__credit {
+    -moz-columns: 30px 1;
+    -webkit-columns: 30px 1;
+    columns: 30px 1;
+  }
+}
+/* line 128, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__again {
+  text-align: right;
+}
+/* line 132, ../sass/components/_panels.scss */
+main[role=main] .score-panel .score-panel__button {
+  background-color: #ddc885;
+  color: #323232;
+  padding: 13px 15px 15px 15px;
 }
 
-/* line 58, ../sass/components/_panels.scss */
+/**
+ * When events augment the display of a panel, they do it
+ * by adding classes to body
+ */
+/* line 150, ../sass/components/_panels.scss */
 body.play .game-panel {
   width: 100%;
   height: 100%;
@@ -260,41 +476,54 @@ body.play .game-panel {
   -webkit-border-radius: 0%;
   border-radius: 0%;
 }
-
-/* line 68, ../sass/components/_panels.scss */
-body.display .game-panel header {
+/* line 161, ../sass/components/_panels.scss */
+body.display .game-panel .game-panel__head {
   opacity: 1;
+  -moz-transform: translate3d(0, 0%, 0);
+  -ms-transform: translate3d(0, 0%, 0);
+  -webkit-transform: translate3d(0, 0%, 0);
   transform: translate3d(0, 0%, 0);
 }
-/* line 72, ../sass/components/_panels.scss */
+/* line 165, ../sass/components/_panels.scss */
 body.display .game-panel .card-list {
   opacity: 1;
+  -moz-transform: scale3d(1, 1, 1);
+  -ms-transform: scale3d(1, 1, 1);
+  -webkit-transform: scale3d(1, 1, 1);
   transform: scale3d(1, 1, 1);
 }
+/* line 174, ../sass/components/_panels.scss */
+body.score .score-panel {
+  -moz-transform: translate3d(0, 0%, 0);
+  -ms-transform: translate3d(0, 0%, 0);
+  -webkit-transform: translate3d(0, 0%, 0);
+  transform: translate3d(0, 0%, 0);
+}
 
-/* line 3, ../sass/components/_forms.scss */
+/**
+ * When user starts a game he/she is prompted with
+ * a username/email login form.
+ */
+/* line 7, ../sass/components/_forms.scss */
 form.login-form {
   position: relative;
   padding: 30px;
   background-color: white;
   margin: 60px auto;
   width: 40%;
-  -moz-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
-  -webkit-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
-  box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
 }
-/* line 14, ../sass/components/_forms.scss */
-form.login-form .login-form__submit-wrapper {
-  text-align: right;
-}
-/* line 18, ../sass/components/_forms.scss */
+/* line 15, ../sass/components/_forms.scss */
 form.login-form .login-form__header {
   padding: 30px;
   margin-left: -30px;
   margin-right: -30px;
   margin-top: -30px;
 }
-/* line 26, ../sass/components/_forms.scss */
+/* line 23, ../sass/components/_forms.scss */
+form.login-form .login-form__submit-wrapper {
+  text-align: right;
+}
+/* line 27, ../sass/components/_forms.scss */
 form.login-form input[type=text],
 form.login-form input[type=email] {
   border: none;
@@ -303,45 +532,41 @@ form.login-form input[type=email] {
   display: block;
   margin-bottom: 30px;
   width: 100%;
+  outline: none;
 }
-/* line 35, ../sass/components/_forms.scss */
+/* line 37, ../sass/components/_forms.scss */
 form.login-form input[type=submit] {
-  font-family: 'icomoon';
-  color: white;
-  font-size: 20px;
   background-color: #ddc885;
-  border: none;
-  height: 50px;
-  width: 50px;
   right: 30px;
   bottom: 30px;
-  outline: none;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  -moz-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
-  -webkit-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
-  box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
 }
-
-@-webkit-keyframes rotating {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-/* line 61, ../sass/components/_forms.scss */
+/* line 45, ../sass/components/_forms.scss */
 form.login-form.loading input[type=submit] {
   -webkit-animation: rotating 2s linear infinite;
 }
+@media (max-width: 480px) {
+  /* line 7, ../sass/components/_forms.scss */
+  form.login-form {
+    width: auto;
+    margin: 7.5px;
+  }
+}
 
-/* line 3, ../sass/components/_cards.scss */
+/**
+ * Container that holds all the cards.
+ *
+ */
+/* line 6, ../sass/components/_cards.scss */
 .card-list {
   *zoom: 1;
   max-width: 960px;
-  margin: auto;
+  margin: 60px auto;
+  opacity: 0;
+  -moz-transition: -moz-transform 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  -o-transition: -o-transform 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  transition: transform 0.2s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  transform: scale3d(0.5, 0.5, 0.5);
 }
 /* line 38, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
 .card-list:after {
@@ -349,160 +574,253 @@ form.login-form.loading input[type=submit] {
   display: table;
   clear: both;
 }
-/* line 7, ../sass/components/_cards.scss */
+/* line 13, ../sass/components/_cards.scss */
 .card-list li {
   float: left;
   width: 16.66667%;
   padding: 15px;
 }
+@media (max-width: 480px) {
+  /* line 6, ../sass/components/_cards.scss */
+  .card-list {
+    width: auto;
+    margin: 7.5px;
+  }
+  /* line 22, ../sass/components/_cards.scss */
+  .card-list li {
+    padding: 7.5px;
+  }
+}
+/* line 27, ../sass/components/_cards.scss */
+.card-list li.shake {
+  -webkit-animation: shake .4s;
+  animation: shake .4s;
+  -webkit-animation-delay: .5s;
+  animation-delay: .5s;
+}
 
-/* line 15, ../sass/components/_cards.scss */
-.container {
+/**
+ * Each card is made up of: container, card an a back
+ * and front elements
+ */
+/* line 39, ../sass/components/_cards.scss */
+.card-container {
   width: 100%;
   height: 60px;
   position: relative;
   perspective: 800px;
 }
-
-/* line 21, ../sass/components/_cards.scss */
-.card {
+/* line 45, ../sass/components/_cards.scss */
+.card-container .card {
   width: 100%;
   height: 100%;
   position: absolute;
   transform-style: preserve-3d;
-  transition: transform 1s;
+  -moz-transition: -moz-transform 0.3s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  -o-transition: -o-transform 0.3s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  transition: transform 0.3s cubic-bezier(0.51, 0.14, 0.68, 1.97);
+  -moz-transform: box-shadow 0.2s ease-out;
+  -ms-transform: box-shadow 0.2s ease-out;
+  -webkit-transform: box-shadow 0.2s ease-out;
+  transform: box-shadow 0.2s ease-out;
 }
-
-/* line 28, ../sass/components/_cards.scss */
-.card figure {
+/* line 53, ../sass/components/_cards.scss */
+.card-container .card.flipped {
+  transform: rotateY(180deg);
+}
+/* line 57, ../sass/components/_cards.scss */
+.card-container .card div {
   display: block;
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
 }
-
-/* line 35, ../sass/components/_cards.scss */
-.card .front {
+/* line 65, ../sass/components/_cards.scss */
+.card-container .card .front {
   background-color: white;
   background-image: url(images/card-pattern.svg);
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
+  -webkit-box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
+  box-shadow: 0 1px 2px rgba(50, 50, 50, 0.37);
 }
-
-/* line 39, ../sass/components/_cards.scss */
-.card .back {
+/* line 72, ../sass/components/_cards.scss */
+.card-container .card .front.loading:before {
+  content: ' ';
+  display: block;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  background-image: url(images/preload.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50%;
+}
+/* line 89, ../sass/components/_cards.scss */
+.card-container .card .back {
+  position: relative;
   background: white;
   transform: rotateY(180deg);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 90% 90%;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.a {
+/* line 98, ../sass/components/_cards.scss */
+.card-container .card .back span {
+  display: inline-block;
+  color: silver;
+  font-weight: 800;
+  margin: 7.5px;
+}
+@media (max-width: 480px) {
+  /* line 98, ../sass/components/_cards.scss */
+  .card-container .card .back span {
+    display: none;
+  }
+}
+/* line 111, ../sass/components/_cards.scss */
+.card-container .card .back.match {
+  -moz-box-shadow: 0 0px 0px rgba(50, 50, 50, 0.37);
+  -webkit-box-shadow: 0 0px 0px rgba(50, 50, 50, 0.37);
+  box-shadow: 0 0px 0px rgba(50, 50, 50, 0.37);
+}
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.a {
   background-image: url(images/01.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.b {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.b {
   background-image: url(images/02.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.c {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.c {
   background-image: url(images/03.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.d {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.d {
   background-image: url(images/04.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.e {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.e {
   background-image: url(images/05.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.f {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.f {
   background-image: url(images/06.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.g {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.g {
   background-image: url(images/07.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.h {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.h {
   background-image: url(images/08.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.i {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.i {
   background-image: url(images/09.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.j {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.j {
   background-image: url(images/10.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.k {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.k {
   background-image: url(images/11.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.l {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.l {
   background-image: url(images/12.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.m {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.m {
   background-image: url(images/13.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.n {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.n {
   background-image: url(images/14.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.o {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.o {
   background-image: url(images/15.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.p {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.p {
   background-image: url(images/16.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.q {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.q {
   background-image: url(images/17.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.r {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.r {
   background-image: url(images/18.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.s {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.s {
   background-image: url(images/19.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.t {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.t {
   background-image: url(images/20.svg);
 }
-
-/* line 72, ../sass/components/_cards.scss */
-.card .back.v {
+/* line 120, ../sass/components/_cards.scss */
+.card-container .card .back.v {
   background-image: url(images/21.svg);
 }
 
-/* line 77, ../sass/components/_cards.scss */
-.card.flipped {
-  transform: rotateY(180deg);
+/**
+ * Ahhh, the good ol' modal window.
+ *
+ * Maybe not the most cutting edge UX module around,
+ * but it's understood by all and it comes the message
+ * across
+ */
+/* line 9, ../sass/components/_dialog.scss */
+.dialog {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(50, 50, 50, 0.5);
+}
+/* line 19, ../sass/components/_dialog.scss */
+.dialog .dialog__dialog {
+  max-width: 50%;
+  padding: 30px;
+  margin: 60px auto;
+  background-color: white;
+}
+@media (max-width: 480px) {
+  /* line 19, ../sass/components/_dialog.scss */
+  .dialog .dialog__dialog {
+    width: auto;
+    max-width: 100%;
+    margin: 60px 7.5px;
+  }
+}
+/* line 34, ../sass/components/_dialog.scss */
+.dialog .dialog__dialog .dialog__footer {
+  text-align: right;
+}
+/* line 38, ../sass/components/_dialog.scss */
+.dialog .dialog__dialog .dialog__close {
+  background-color: #c8754b;
+  padding: 13px 15px 15px 15px;
+  font-weight: 800;
 }

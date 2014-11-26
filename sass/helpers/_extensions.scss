@@ -1,0 +1,32 @@
+
+	%drop-shadow {
+		@include box-shadow(0 1px 2px rgba($color-black,.37));
+	}
+
+	%article-text {
+		a{
+			text-decoration: none;
+			color: $color-white;
+		}
+		h2{
+			@include adjust-font-size-to($font-size-header,1,$font-size-base);
+			@include padding-leader(1,$font-size-header);
+		}
+		p{
+			@include margin-leader(1,$font-size-base);
+			@include margin-trailer(1,$font-size-base);
+		}
+	}
+
+	%button{
+		height: 50px;
+		width: 50px;
+		outline: none;
+		border: none;
+		text-decoration: none;
+		font-family: 'icomoon';
+		color: $color-white;
+		font-size: 20px;
+		@include border-radius(50%);
+		@extend %drop-shadow;
+	}

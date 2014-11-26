@@ -1,5 +1,15 @@
+/**
+ * The three stages of the game are sored in three section.
+ *
+ * 1. Log in		(.login-panel)
+ * 2. Play game		(.game-panel)
+ * 3. Get score		(.score-panel)
+ */
 
 
+	/**
+	 * Default display of state panels
+	 */
 	main[role=main] {
 
 		/**
@@ -13,7 +23,6 @@
 			left: 0;
 		}
 
-
 		/**
 		 *
 		 */
@@ -24,54 +33,147 @@
 			top: -10px;
 			left: -10px;
 			opacity: 0;
-			@include border-radius(50%);
 			background-color: $color-yellow;
+			@include border-radius(50%);
 			@include transition(all .3s);
-			header{
+
+			.game-panel__head {
 				opacity: 0;
 				background-color: $color-green;
-				transform: translate3d(0,-100%,0);
-				padding: $gutter;
+				padding: $gutter/2 $gutter;
+				color: $color-white;
+				@include transform( translate3d(0,-100%,0) );
 				@include transition(transform .4s );
-			}
-			.card-list {
-				margin: $gutter*2 auto;
-				opacity: 0;
-				@include transition(transform .2s cubic-bezier(.51,.14,.68,1.97) );
-				transform: scale3d(.5,.5,.5);
 
-				td{
-					padding: $gutter;
+				.game-panel__header {
+					@include inline-block;
+					font-weight: 800;
+				}
+			}
+
+		}
+
+		/**
+		 *
+		 */
+		.score-panel {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			background-color: $color-red;
+			padding: $gutter;
+			@include transform( translate3d(0, 100%, 0) );
+			@include transition(all .2s cubic-bezier(.51,.14,.68,1.97));
+
+			//MOBILE
+			@include breakpoint(max-width $size-mobile){
+				overflow: scroll;
+			}
+			.score-panel__header {
+				@include adjust-font-size-to($font-size-header,1,$font-size-base);
+				@include padding-trailer(2,$font-size-header);
+			}
+
+			.score-panel__score {
+				@include pie-clearfix;
+				@include padding-trailer(2,$font-size-header);
+
+				.score-panel__award {
+					width: 150px;
+					height: 150px;
+					display: block;
+					float: left;
+					background-image: url(images/01-up.svg);
+					background-position: center;
+					background-size: 100%;
+					@include border-radius(50%);
+					@include box-shadow(0 1px 2px rgba($color-black,.37));
+				}
+				.score-panel__award.up-01 { background-image: url(images/01-up.svg); }
+				.score-panel__award.up-02 { background-image: url(images/02-up.svg); }
+				.score-panel__award.up-03 { background-image: url(images/03-up.svg); }
+
+				.score-panel__total {
+					padding: rhythm(1,$font-size-base);
+					@include adjust-font-size-to($font-size-header,1,$font-size-base);
+					margin-left: 200px;
+				}
+
+				//MOBILE
+				@include breakpoint(max-width $size-mobile){
+					.score-panel__award {
+						width: 50px;
+						height: 50px;
+					}
+					.score-panel__total {
+						padding-top: 0;
+						margin-left: 60px;
+					}
+				}
+			}
+
+			.score-panel__credit {
+				@extend %article-text;
+				@include columns( $gutter 2 );
+				//MOBILE
+				@include breakpoint(max-width $size-mobile){
+					@include columns( $gutter 1 );
+				}
+			}
+
+			.score-panel__again{
+				text-align: right;
+			}
+
+			.score-panel__button{
+				@extend %button;
+				background-color: $color-yellow;
+				color: $color-black;
+				padding: 13px 15px 15px 15px;
+			}
+		}
+	}
+
+
+	/**
+	 * When events augment the display of a panel, they do it
+	 * by adding classes to body
+	 */
+	body{
+
+		//START GAME
+		&.play{
+			.game-panel{
+				width: 100%;
+				height: 100%;
+				opacity: 1;
+				@include border-radius(0%);
+			}
+		}
+
+		//DISPLAY BOARD
+		&.display {
+			.game-panel{
+				.game-panel__head{
+					opacity: 1;
+					@include transform( translate3d(0,0%,0) );
+				}
+				.card-list {
+					opacity: 1;
+					@include transform( scale3d(1,1,1) );
 				}
 			}
 		}
-	}
 
-
-
-
-
-
-
-	body.play{
-
-		.game-panel{
-			width: 100%;
-			height: 100%;
-			opacity: 1;
-			@include border-radius(0%);
-		}
-	}
-
-	body.display{
-		.game-panel{
-			header{
-				opacity: 1;
-				transform: translate3d(0,0%,0);
-			}
-			.card-list {
-				opacity: 1;
-				transform: scale3d(1,1,1)
+		//DISPLAY SCORE
+		&.score {
+			.score-panel{
+				@include transform( translate3d(0, 0%, 0) );
 			}
 		}
+
 	}

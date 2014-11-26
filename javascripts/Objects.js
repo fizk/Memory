@@ -51,13 +51,20 @@ Session.prototype.email = undefined;
  * to it to monitor the game.
  *
  * @param {Function} callback
+ * @param {Function} error
  */
-Session.prototype.start = function( callback ){
+Session.prototype.start = function( callback, error ){
 	var formData = new FormData();
 	formData.append('name',this.name);
 	formData.append('email',this.email);
 	var xhr = new XMLHttpRequest();
 	xhr.open('post',this.host+'/games/');
+	xhr.addEventListener('error',function(){
+		error.call(this);
+	},false);
+	xhr.addEventListener('abort',function(){
+		error.call(this);
+	},false);
 	xhr.addEventListener('load',function(event){
 		if( event.target.status == 200 ){
 			var object = JSON.parse( event.target.responseText );
@@ -67,6 +74,8 @@ Session.prototype.start = function( callback ){
 			game.height = object.height;
 			game.session = this;
 			callback.call(this,game);
+		}else{
+			error.call(this);
 		}
 
 	}.bind(this),false);
@@ -79,8 +88,9 @@ Session.prototype.start = function( callback ){
  * @param {int} x
  * @param {int} y
  * @param {Function} callback
+ * @param {Function} error
  */
-Session.prototype.check = function( x, y, callback ){
+Session.prototype.check = function( x, y, callback, error ){
 
 	var xhr = new XMLHttpRequest();
 	xhr.open('get',this.host+'/games/'+this.id+'/cards/'+(y)+','+(x));
@@ -88,9 +98,14 @@ Session.prototype.check = function( x, y, callback ){
 		if( event.target.status == 200 ){
 			callback.call(this,event.target.responseText);
 		}else{
-			alert('error from server');
+			error.call(this);
 		}
-
+	},false);
+	xhr.addEventListener('error',function(){
+		error.call(this);
+	},false);
+	xhr.addEventListener('abort',function(){
+		error.call(this);
 	},false);
 	xhr.send();
 };
@@ -103,8 +118,9 @@ Session.prototype.check = function( x, y, callback ){
  * @param {int} x2
  * @param {int} y2
  * @param {Function} callback
+ * @param {Function} error
  */
-Session.prototype.end = function( x1, y1, x2, y2, callback ){
+Session.prototype.end = function( x1, y1, x2, y2, callback, error ){
 	var formData = new FormData();
 	formData.append('x1',x1);
 	formData.append('y1',y1);
@@ -115,8 +131,15 @@ Session.prototype.end = function( x1, y1, x2, y2, callback ){
 	xhr.addEventListener('load',function(event){
 		if( event.target.status == 200 ){
 			callback.call(this,JSON.parse(event.target.responseText));
+		}else{
+			error.call(this,event.target.responseText);
 		}
-
+	},false);
+	xhr.addEventListener('error',function(){
+		error.call(this);
+	},false);
+	xhr.addEventListener('abort',function(){
+		error.call(this);
 	},false);
 	xhr.send(formData);
 };
@@ -167,6 +190,13 @@ Game.prototype.cards = undefined;
 Game.prototype.board = [];
 
 /**
+ * he gaming matches represented as a 2d array.
+ *
+ * @type {Array}
+ */
+Game.prototype.matches = [];
+
+/**
  * Possible states in the game are (among others) no
  * card selected, one card selected and two cards selected.
  *
@@ -204,7 +234,10 @@ Game.prototype.events = {
 	'flip': [],
 	'unflip': [],
 	'match': [],
-	'win': []
+	'win': [],
+	'before': [],
+	'after': [],
+	'error': []
 };
 
 /**
@@ -224,6 +257,10 @@ Game.prototype.move = 0;
 Game.prototype.match = function(){
 	if((this.selected.first != undefined && this.selected.last != undefined) &&
 		(this.selected.first.value == this.selected.last.value)){
+
+		this.matches[this.selected.first.x][this.selected.first.y] = true;
+		this.matches[this.selected.last.x][this.selected.last.y] = true;
+
 		return [
 			this.selected.first.element,
 			this.selected.last.element
@@ -255,6 +292,72 @@ Game.prototype.store = function(object){
 };
 
 /**
+ * Remove card form selection storage.
+ *
+ * @param {number} x
+ * @param {number} y
+ */
+Game.prototype.unstore = function(x,y){
+	if( this.selected.first != undefined &&
+		this.selected.first.x == x && this.selected.first.y == y ){
+		this.selected.first = undefined;
+	}else{
+		this.selected.last = undefined;
+	}
+};
+
+/**
+ * This is somewhat of a utility function. When called
+ * it will check the state of the Game in regards
+ * to matches and wins (end state). If there is a match
+ * this function will reset the selection properties
+ * to be able to start search for a new match,
+ * If there are only one possible marches left it will
+ * end the game.
+ *
+ */
+Game.prototype.matchAndWin = function(){
+	//MATCH
+	//	check if there is a match and if so,
+	//	call event handlers and reset state of game
+	var elements = undefined;
+	if(  ( elements = this.match()) !== false  ){
+
+		this.events.match.forEach(function(f){
+			f.call(this,elements[0],elements[1]);
+		}.bind(this));
+
+		this.store(undefined);
+
+		this.pairs += 1;
+
+		if( this.pairs == this.size-1 ){
+
+			//WIN-HANDLER
+			//	calling all win event handlers
+			var last = [];
+			this.matches.forEach(function(row, rINdex){
+				row.forEach(function(column, cIndex){
+					if(column==undefined){
+						last.push({x:rINdex,y:cIndex})
+					}
+				});
+			});
+
+			this.session.end(last[0].x,last[0].y,last[1].x,last[1].y,function(object){
+				this.events.win.forEach(function(f){
+					f.call(this,object);
+				}.bind(this));
+			}.bind(this),function(){
+				this.events.error.forEach(function(f){
+					f.call(this);
+				}.bind(this));
+			}.bind(this));
+		}
+	}
+};
+
+/**
  * Here is most of the logic for the game. When this function
  * is called, you have to pass in an NodeList of all elements
  * representing cards before you call this function, 'cause it
@@ -269,8 +372,10 @@ Game.prototype.create = function(){
 	//	create an array that is the board
 	//	with undefined values
 	for( var i = 0; i< this.height; i++ ){
+		this.matches.push([]);
 		this.board.push([]);
 		for(var ii=0; ii<this.width;ii++){
+			this.matches[i].push(undefined);
 			this.board[i].push(undefined);
 		}
 	}
@@ -299,25 +404,23 @@ Game.prototype.create = function(){
 				//	the current state of the card is that it's facing
 				//	it's back up
 				if(!card.checked){
-					//STORE
-					//	store card in the empty slot
-					//	and not overwrite the other card.
-					if( this.selected.first != undefined &&
-						this.selected.first.x == index && this.selected.first.y == ind ){
-						this.selected.first = undefined;
-					}else{
-						this.selected.last = undefined;
-					}
-					//UN-FLIP-HANDLER
-					//	calling all un-flip event handlers
-					this.events.unflip.forEach(function(f){
-						f.call(this,card);
-					}.bind(this));
-					card.checked = true;
+					this.unstore(index,ind);
 
-					//FRONT
-					//	the current state of the card is that it's facing
-					//	the front up
+					//NOT A PART OF MATCH
+					//	if this card is not already marked as a
+					//	part of a match...
+					if( !this.matches[index][ind] ){
+						//UN-FLIP-HANDLER
+						//	calling all un-flip event handlers
+						this.events.unflip.forEach(function(f){
+							f.call(this,card);
+						}.bind(this));
+						card.checked = true;
+					}
+
+				//FRONT
+				//	the current state of the card is that it's facing
+				//	the front up
 				}else{
 
 					//NO FLIP
@@ -326,9 +429,11 @@ Game.prototype.create = function(){
 					if( this.selected.first != undefined && this.selected.last != undefined ){
 						event.preventDefault();
 						event.target.checked = false;
-						alert('X');
-						//FLIP
-						//	flip a card, zero or one card is selected
+						this.events.error.forEach(function(f){
+							f.call(this,{ code:100,message:'invalid selection' });
+						}.bind(this));
+					//FLIP
+					//	flip a card, zero or one card is selected
 					}else{
 
 						//CHECKED
@@ -362,47 +467,18 @@ Game.prototype.create = function(){
 								element: card
 							} );
 
-							//MATCH
-							//	check if there is a match and if so,
-							//	call event handlers and reset state of game
-							var elements = undefined;
-							if(  ( elements = this.match()) !== false  ){
+							this.matchAndWin();
 
-								this.events.match.forEach(function(f){
-									f.call(this,elements[0],elements[1]);
-								}.bind(this));
-
-								this.store(undefined);
-
-								this.pairs += 1;
-
-								if( this.pairs == this.size-1 ){
-
-									//WIN-HANDLER
-									//	calling all win event handlers
-									var last = [];
-									this.board.forEach(function(row, rINdex){
-										row.forEach(function(column, cIndex){
-											if(column==undefined){
-												last.push({x:rINdex,y:cIndex})
-											}
-										});
-									});
-
-									this.session.end(last[0].x,last[0].y,last[1].x,last[1].y,function(object){
-										this.events.win.forEach(function(f){
-											f.call(this,object);
-										}.bind(this));
-									}.bind(this));
-								}
-							}
-							//NOT IN MEMORY
-							//	the value of this card is not in memory/cache
-							//	we have to use the session object and make a request
-							//	through it to get the value of the card
-							//	We will store it to our cache so we won't have to do
-							//	this a gain.
+						//NOT IN MEMORY
+						//	the value of this card is not in memory/cache
+						//	we have to use the session object and make a request
+						//	through it to get the value of the card
+						//	We will store it to our cache so we won't have to do
+						//	this a gain.
 						}else{
+							this.events.before.forEach(function(f){
+								f.call(this,card);
+							}.bind(this));
 							this.session.check(index, ind,function(result){
 								this.board[index][ind] = result;
 
@@ -410,6 +486,9 @@ Game.prototype.create = function(){
 								//	call all flip event handlers
 								this.events.flip.forEach(function(f){
 									f.call(this,card,result);
+								}.bind(this));
+								this.events.after.forEach(function(f){
+									f.call(this,card);
 								}.bind(this));
 
 								//STORE
@@ -421,53 +500,21 @@ Game.prototype.create = function(){
 									element: card
 								} );
 
-								//MATCH
-								//	check if there is a match and if so,
-								//	call event handlers and reset state of game
-								var elements = undefined;
-								if(  ( elements = this.match()) !== false  ){
+								this.matchAndWin();
 
-									this.events.match.forEach(function(f){
-										f.call(this,elements[0],elements[1]);
-									}.bind(this));
-
-									this.store(undefined);
-
-									this.pairs += 1;
-
-									if( this.pairs == this.size-1 ){
-										//WIN-HANDLER
-										//	calling all win event handlers
-										var last = [];
-										this.board.forEach(function(row, rINdex){
-											row.forEach(function(column, cIndex){
-												if(column==undefined){
-													last.push({x:rINdex,y:cIndex})
-												}
-											});
-										});
-
-										this.session.end(last[0].x,last[0].y,last[1].x,last[1].y,function(object){
-											this.events.win.forEach(function(f){
-												f.call(this,object);
-											}.bind(this));
-										}.bind(this));
-									}
-
-								}
-
+							}.bind(this),function(){
+								this.events.error.forEach(function(f){
+									f.call(this,{ code:200,message:'Error checking card' });
+								}.bind(this));
 							}.bind(this));
-						}
 
+						}
 
 					}
 
 				}
 
-
 			}.bind(this),false);
-
-
 
 		}.bind(this));
 

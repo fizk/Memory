@@ -2,8 +2,11 @@
  * Created by einar on 21/11/14.
  */
 
+
 /**
  * Listen for when the document is ready.
+ *
+ * Once the document is ready we can start the whole game.
  *
  */
 document.addEventListener('DOMContentLoaded',function(){
@@ -31,31 +34,17 @@ document.addEventListener('DOMContentLoaded',function(){
 			}
 		},false);
 
+		var cardTemplate = document.getElementById('tpl-card');
+		var dialogTemplate = document.getElementById('tpl-dialog');
+
 		var session = new Session();
 		//session.host = 'http://totalrecall.99cluster.com';
 		session.name = this.name.value;
 		session.email = this.email.value;
 		session.start(function(object){
 
-
 			for( var i=0; i<(object.width*object.height);i++ ){
-				var container = (function(){
-					var container = document.createElement('section');
-					container.classList.add('container');
-					var card = document.createElement('div');
-					card.classList.add('card');
-					var front = document.createElement('figure');
-					front.classList.add('front');
-					var back = document.createElement('figure');
-					back.classList.add('back');
-
-					container.appendChild(card);
-					card.appendChild(front);
-					card.appendChild(back);
-					container.appendChild(card);
-					return container;
-				})();
-
+				var container = cardTemplate.content.cloneNode(true);
 				var li = document.createElement('li');
 				li.appendChild(container);
 				document.querySelector('.card-list').appendChild(li);
@@ -74,12 +63,12 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 			object.addEventListener('move',function(e){
-				document.getElementById('monitor').innerText = e;
+				document.querySelector('.js-monitor').innerText = e;
 			},false);
 
 			object.addEventListener('flip',function(element, value){
 				element.querySelector('.card').classList.add('flipped');
-				element.querySelector('.back').innerText = value;
+				element.querySelector('.back span').innerText = value;
 				element.querySelector('.back').classList.add( value );
 			},false);
 
@@ -87,18 +76,52 @@ document.addEventListener('DOMContentLoaded',function(){
 				e.querySelector('.card').classList.remove('flipped');
 			},false);
 
+			object.addEventListener('before',function(e){
+				e.querySelector('.front').classList.add('loading');
+			},false);
+
+			object.addEventListener('after',function(e){
+				e.querySelector('.front').classList.remove('loading');
+			},false);
+
+			object.addEventListener('error',function(e){
+				var dialog = dialogTemplate.content.cloneNode(true);
+
+				document.body.appendChild(dialog);
+				document.querySelector('.js-dialog-close').addEventListener('click',function(event){
+					event.preventDefault();
+					var dialog = document.querySelector('.dialog');
+					dialog.parentNode.removeChild(dialog);
+				},false);
+
+			},false);
+
 			object.addEventListener('match',function(e1,e2){
-				e1.querySelector('.back').style.backgroundColor = 'pink';
-				e2.querySelector('.back').style.backgroundColor = 'pink';
+				e1.querySelector('.back').classList.add('match');
+				e2.querySelector('.back').classList.add('match');
+
+				e1.classList.add('shake');
+				e2.classList.add('shake');
 			},false);
 
 			object.addEventListener('win',function(result){
-				console.log( result );
+				var score = parseInt(28/this.move*100);
+				document.body.classList.add('score');
+				if( score <= 100 && score >= 70){
+					document.querySelector('.score-panel__award').classList.add('up-01');
+				}else if( score <= 69 && score >= 45  ){
+					document.querySelector('.score-panel__award').classList.add('up-02');
+				}else{
+					document.querySelector('.score-panel__award').classList.add('up-03');
+				}
+
+				document.querySelector('.score-panel__total em').innerText = score + '%';
+				console.log(this);
 			},false);
 
 			object.create();
 
-		});
+		},function(){ alert("Can't connect to server") });
 
 
 

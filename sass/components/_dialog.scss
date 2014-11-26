@@ -1,0 +1,45 @@
+/**
+ * Ahhh, the good ol' modal window.
+ *
+ * Maybe not the most cutting edge UX module around,
+ * but it's understood by all and it comes the message
+ * across
+ */
+
+	.dialog{
+		position: fixed;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-color: rgba( $color-black,.5 );
+
+		.dialog__dialog {
+			max-width: 50%;
+			padding: $gutter;
+			margin: $gutter*2 auto;
+			background-color: $color-white;
+			@extend %drop-shadow;
+			@extend %article-text;
+
+			//MOBILE
+			@include breakpoint(max-width $size-mobile){
+				width: auto;
+				max-width: 100%;
+				margin: $gutter*2 $gutter/4;
+			}
+
+			.dialog__footer {
+				text-align: right;
+			}
+
+			.dialog__close {
+				@extend %button;
+				background-color: $color-red;
+				padding: 13px 15px 15px 15px;
+				font-weight: 800;
+			}
+		}
+	}
