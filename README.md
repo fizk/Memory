@@ -52,6 +52,12 @@ You could also use the the famous Python HTTP server
 But do make sure you are using an HTTP server. All URIs start with `/` so they are expecting to be running in a 
 web-server. Also `XmlHttpRequest` needs to be running on a server to be able to do requests.
  
+###Development
+You have to do 
+
+    $ bower install
+    
+if you are gonna do some development. The SASS stylesheets need something from the `bower_components` directory.
  
 ##What have you done?
 Here is a little rant about how the code got developed.
@@ -139,7 +145,3 @@ And now the presentation and the game logic have been separated. The only requir
 If these requirements are met, then in theory you could use that ever method to display the game and various
 state of it.
 
-
-##Icons
-Stash by Jonathan Patterson (Free for commercial use)
-Ballicons 2 Free by Pixel Buddha (Creative Commons (Attribution 3.0 Unported))
